@@ -1,0 +1,28 @@
+<div class="example-container mat-elevation-z8">
+<cdk-table [dataSource]="dataSource">
+    <!-- User name Definition -->
+
+
+
+    <ng-container ng-form="" cdkColumnDef="name">
+      <cdk-header-cell *cdkHeaderCellDef> User name </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let row"> {{row.name}} </cdk-cell>
+    </ng-container>
+
+    <!-- Age Definition -->
+    <ng-container cdkColumnDef="age">
+      <cdk-header-cell *cdkHeaderCellDef> Pic </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let row"> {{row.picture}} </cdk-cell>
+    </ng-container>
+
+    <!-- Title Definition -->
+    <ng-container cdkColumnDef="title">
+      <cdk-header-cell *cdkHeaderCellDef> Title </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let row"> {{row.title}} </cdk-cell>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <cdk-header-row *cdkHeaderRowDef="['name', 'age', 'title']"></cdk-header-row>
+    <cdk-row *cdkRowDef="let row; columns: ['name', 'age', 'title']"></cdk-row>
+  </cdk-table>
+</div>
