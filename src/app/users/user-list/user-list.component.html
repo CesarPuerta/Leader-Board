@@ -1,28 +1,46 @@
-<div class="example-container mat-elevation-z8">
-<cdk-table [dataSource]="dataSource">
-    <!-- User name Definition -->
-
-
-
-    <ng-container ng-form="" cdkColumnDef="name">
-      <cdk-header-cell *cdkHeaderCellDef> User name </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let row"> {{row.name}} </cdk-cell>
-    </ng-container>
-
-    <!-- Age Definition -->
-    <ng-container cdkColumnDef="age">
-      <cdk-header-cell *cdkHeaderCellDef> Pic </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let row"> {{row.picture}} </cdk-cell>
-    </ng-container>
-
-    <!-- Title Definition -->
-    <ng-container cdkColumnDef="title">
-      <cdk-header-cell *cdkHeaderCellDef> Title </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let row"> {{row.title}} </cdk-cell>
-    </ng-container>
-
-    <!-- Header and Row Declarations -->
-    <cdk-header-row *cdkHeaderRowDef="['name', 'age', 'title']"></cdk-header-row>
-    <cdk-row *cdkRowDef="let row; columns: ['name', 'age', 'title']"></cdk-row>
-  </cdk-table>
-</div>
+<input
+        type='text'
+        style='padding:8px;margin:15px auto;width:30%;'
+        placeholder='Type to filter the name column...'
+        (keyup)='updateFilter($event)'/>
+<ngx-datatable
+  #table
+  class="material"
+  [rows]="rows"
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  [rowHeight]="'auto'"
+  [limit]="10"
+  (activate)="onActivate($event)">
+  <ngx-datatable-column name="Full Name" [width]="200">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.name}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Photo" [width]="400">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.picture}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Average Grade" [width]="300">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.average_grade}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Delivered Homeworks" [width]="300">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.homeworks_delivered}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Missing Homeworks" [width]="300">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.homeworks_missing}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Last updated" [width]="300">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.last_updated}}
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
