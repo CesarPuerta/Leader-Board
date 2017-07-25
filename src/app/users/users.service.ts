@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/toPromise';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import { User } from './../users.model';
 import { InMemoryDataService } from './../users-mock.model';
 import { Injectable } from '@angular/core';
@@ -10,13 +10,29 @@ import { Injectable } from '@angular/core';
     private http: Http
   ) { }
 
-
-
+  private usersUrl = 'api/usersList';
+  private headers = new Headers({'Content-Type': 'application/json'});
 
   getUsers(): Promise<User[]> {
-    return this.http.get('api/usersList')
+    return this.http.get(this.usersUrl)
               .toPromise()
               .then(response => response.json().data as User[]);
+  }
+
+
+  deleteUser(id: number): Promise<void> {
+    const url = `${this.usersUrl}/${id}`;
+    return this.http.delete(url, {headers: this.headers})
+      .toPromise()
+      .then(() => null);
+  }
+
+  updateUser(user): Promise<any> {
+    const url = `${this.usersUrl}/${user.id}`;
+    return this.http
+      .put(url, JSON.stringify(user), {headers: this.headers})
+      .toPromise()
+      .then(() => user);
   }
 
   /*

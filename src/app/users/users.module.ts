@@ -2,14 +2,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {MdButtonModule, MdCheckboxModule, MdTableModule} from '@angular/material';
+import {MdButtonModule, MdCheckboxModule, MdTableModule, MdDialogModule, MdInputModule, MdRadioModule} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk';
+import { FormsModule } from '@angular/forms';
+import { MaterialModule } from '@angular/material';
+
 
 import { UsersService } from './users.service';
 import { InMemoryDataService } from './../users-mock.model';
 import { UserListComponent } from './user-list/user-list.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
-import {PopupModule} from 'ng2-opd-popup';
+import { UserCreateComponent } from './user-create/user-create.component';
+import { SharedComponent } from './shared/shared.component';
+import { UndefinedComponent } from './undefined/undefined.component';
+
 
 @NgModule({
   imports: [
@@ -20,18 +25,27 @@ import {PopupModule} from 'ng2-opd-popup';
     MdTableModule,
     CdkTableModule,
     NgxDatatableModule,
-    PopupModule.forRoot()
+    MdDialogModule,
+    MdInputModule,
+    MdRadioModule,
+    FormsModule,
+    MaterialModule
   ],
   declarations: [
     UserListComponent,
-    UserDetailsComponent
+    UserCreateComponent,
+    SharedComponent,
+    UndefinedComponent
   ],
   entryComponents: [
-    UserDetailsComponent
+    UserListComponent,
+    UserCreateComponent,
+    SharedComponent
   ],
   exports: [
+    SharedComponent,
     UserListComponent,
-    UserDetailsComponent
+    UserCreateComponent
   ],
   providers: [
     UsersService

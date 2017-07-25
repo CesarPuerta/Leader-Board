@@ -1,0 +1,55 @@
+<form class="example-form">
+  <table class="example-full-width" cellspacing="0">
+    <tr>
+      <td colspan="5">
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Full Name" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}">
+        </md-input-container>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5">
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Photo" [(ngModel)]="user.picture" [ngModelOptions]="{standalone: true}">
+        </md-input-container>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 1 score" [(ngModel)]="user.homework_1" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 2 score" [(ngModel)]="user.homework_2" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 3 score" [(ngModel)]="user.homework_3" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 4 score" [(ngModel)]="user.homework_4" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 5 score" [(ngModel)]="user.homework_5" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5">
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Last updated" [(ngModel)]="user.last_updated" [ngModelOptions]="{standalone: true}">      
+        </md-input-container>
+      </td>
+    </tr>
+  </table>
+  <md-dialog-actions>
+    <button md-raised-button (click)="saveUser()">Save</button>    
+  </md-dialog-actions>
+</form>

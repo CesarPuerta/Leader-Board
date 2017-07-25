@@ -1,3 +1,8 @@
+import {MdDialog, MdDialogRef} from '@angular/material';
+
+import { SharedComponent } from './../shared/shared.component';
+
+
 
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable/release';
@@ -5,10 +10,8 @@ import { DatatableComponent } from '@swimlane/ngx-datatable/release';
 import {DataSource} from '@angular/cdk';
 
 
-
 import { User } from './../../users.model';
 import { UsersService } from './../users.service';
-import { UserDetailsComponent } from '../user-details/user-details.component';
 
 
 @Component({
@@ -17,18 +20,17 @@ import { UserDetailsComponent } from '../user-details/user-details.component';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  @Output() openPopup: EventEmitter<any> = new EventEmitter();
+  
 
   rows: User[];
   temp = [];
   selectedOption: string;
-
-
-
+  
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(
-    private usersService: UsersService
+    private usersService: UsersService,
+    public dialog: MdDialog
   ) { }
 
   ngOnInit() {
@@ -36,12 +38,16 @@ export class UserListComponent implements OnInit {
       .then((users: User[]) => this.rows = users);
   }
 
+  loadUsers() {
+    this.usersService.getUsers().then((users: User[]) => this.rows = users);
+  }
+
 
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     // filter our data
     if (val === '') {
-      this.usersService.getUsers().then((users: User[]) => this.rows = users);
+      this.loadUsers();
     } else {
       this.temp = this.rows.filter(function(d) {
         return d.name.toLowerCase().indexOf(val) !== -1 || !val;
@@ -55,13 +61,26 @@ export class UserListComponent implements OnInit {
   }
 
 
-  onActivate(event) {
-    console.log('Activate Event', event);
-    this.openDialog();
+  onActivate(data) {
+    this.openDialog(data);
+  }
+
+  openDialog(data) {
+    const dialogRef = this.dialog.open(SharedComponent, {
+      data: data.row,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadUsers();
+    });
   }
 
 
-  openDialog() {
-    this.openPopup.emit('Salio');
+  delete(user): void {
+    this.usersService
+        .deleteUser(user.id)
+        .then(() => {
+          this.loadUsers();
+        });
   }
 }
