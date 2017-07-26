@@ -7,10 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  isOpen = false;
-
-
-  sendData() {
-    this.isOpen = !this.isOpen;
-  }
 }
