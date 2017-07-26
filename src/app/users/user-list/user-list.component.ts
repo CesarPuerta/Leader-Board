@@ -1,13 +1,13 @@
-import {MdDialog, MdDialogRef} from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { SharedComponent } from './../shared/shared.component';
+import { UserTemplateComponent } from './../user-template/user-template.component';
 
 
 
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable/release';
 
-import {DataSource} from '@angular/cdk';
+import { DataSource } from '@angular/cdk';
 
 
 import { User } from './../../users.model';
@@ -20,12 +20,14 @@ import { UsersService } from './../users.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  
 
+  user: User;
   rows: User[];
   temp = [];
   selectedOption: string;
-  
+  average: number;
+
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(
@@ -34,12 +36,14 @@ export class UserListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.usersService.getUsers()
-      .then((users: User[]) => this.rows = users);
+    this.usersService.get()
+      .then((users: User[]) => {
+        this.rows = users;
+      });
   }
 
   loadUsers() {
-    this.usersService.getUsers().then((users: User[]) => this.rows = users);
+    this.usersService.get().then((users: User[]) => this.rows = users);
   }
 
 
@@ -49,7 +53,7 @@ export class UserListComponent implements OnInit {
     if (val === '') {
       this.loadUsers();
     } else {
-      this.temp = this.rows.filter(function(d) {
+      this.temp = this.rows.filter(function (d) {
         return d.name.toLowerCase().indexOf(val) !== -1 || !val;
       });
     }
@@ -66,7 +70,7 @@ export class UserListComponent implements OnInit {
   }
 
   openDialog(data) {
-    const dialogRef = this.dialog.open(SharedComponent, {
+    const dialogRef = this.dialog.open(UserTemplateComponent, {
       data: data.row,
     });
 
@@ -78,9 +82,19 @@ export class UserListComponent implements OnInit {
 
   delete(user): void {
     this.usersService
-        .deleteUser(user.id)
-        .then(() => {
-          this.loadUsers();
-        });
+      .delete(user.id)
+      .then(() => {
+        this.loadUsers();
+      });
+  }
+
+  createUser(): void {
+    const dialogRef = this.dialog.open(UserTemplateComponent, {
+      data: { 'createUser': true },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadUsers();
+    });
   }
 }

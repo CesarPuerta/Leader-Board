@@ -11,26 +11,32 @@ import { Injectable } from '@angular/core';
   ) { }
 
   private usersUrl = 'api/usersList';
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  getUsers(): Promise<User[]> {
+  get(): Promise<User[]> {
     return this.http.get(this.usersUrl)
-              .toPromise()
-              .then(response => response.json().data as User[]);
+      .toPromise()
+      .then(response => response.json().data as User[]);
   }
 
-
-  deleteUser(id: number): Promise<void> {
+  delete(id: number): Promise<void> {
     const url = `${this.usersUrl}/${id}`;
-    return this.http.delete(url, {headers: this.headers})
+    return this.http.delete(url, { headers: this.headers })
       .toPromise()
       .then(() => null);
   }
 
-  updateUser(user): Promise<any> {
+  update(user): Promise<any> {
     const url = `${this.usersUrl}/${user.id}`;
     return this.http
-      .put(url, JSON.stringify(user), {headers: this.headers})
+      .put(url, JSON.stringify(user), { headers: this.headers })
+      .toPromise()
+      .then(() => user);
+  }
+
+  create(user): Promise<User[]> {
+    return this.http
+      .post(this.usersUrl, JSON.stringify(user), { headers: this.headers })
       .toPromise()
       .then(() => user);
   }

@@ -1,8 +1,12 @@
-<input
-        type='text'
-        style='padding:8px;margin:15px auto;width:30%;'
-        placeholder='Type to filter the name column...'
-        (keyup)='updateFilter($event)'/>
+<button md-raised-button class="create" (click)="createUser()">Create User</button>
+<div class="input_container">
+
+<input type='text'  placeholder='Type to filter the name column...' (keyup)='updateFilter($event)'/>
+</div>
+
+
+
+
 <ngx-datatable
   #table
   class="material"
@@ -13,41 +17,41 @@
   [rowHeight]="'auto'"
   [limit]="10"
   (activate)="onActivate($event)">
+  <ngx-datatable-column name="Photo" [width]="200">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <img class="picture" src="{{row.picture}}" />
+    </ng-template>
+  </ngx-datatable-column>
   <ngx-datatable-column name="Full Name" [width]="200">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.name}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Photo" [width]="400">
-    <ng-template let-row="row" ngx-datatable-cell-template>
-      {{row.picture}}
-    </ng-template>
-  </ngx-datatable-column>
-  <ngx-datatable-column name="Average Grade" [width]="300">
+  <ngx-datatable-column name="Average Grade" [width]="100">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.average_grade}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Delivered Homeworks" [width]="300">
+  <ngx-datatable-column name="Delivered Homeworks" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.homeworks_delivered}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Missing Homeworks" [width]="300">
+  <ngx-datatable-column name="Missing Homeworks" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.homeworks_missing}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Last updated" [width]="300">
+  <ngx-datatable-column name="Last updated" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.last_updated}}
     </ng-template>
   </ngx-datatable-column>
 
-  <ngx-datatable-column name="Delete User" [width]="300">
+  <ngx-datatable-column name="Actions" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
-      <button md-raised-button class="delete" (click)="delete(row); $event.stopPropagation()">x</button>
+      <button md-raised-button class="delete" (click)="delete(row); $event.stopPropagation()">Delete User</button>
     </ng-template>
-  </ngx-datatable-column>  
-  
+  </ngx-datatable-column>
+
 </ngx-datatable>
