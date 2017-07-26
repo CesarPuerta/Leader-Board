@@ -37,6 +37,7 @@ export class UserTemplateComponent implements OnInit {
     return User.createObject(
       this.data.id || Date.now() + Math.floor(Math.random()),
       this.data.name || '',
+      this.data.color_name || 'green',
       this.data.picture || '',
       this.data.average_grade || 0,
       this.data.homework_1 || 0,
@@ -45,20 +46,24 @@ export class UserTemplateComponent implements OnInit {
       this.data.homework_4 || 0,
       this.data.homework_5 || 0,
       this.data.homeworks_missing || 0,
+      this.data.homeworks_delivered || 0,
       this.data.last_updated || ''
     );
   }
 
-
+  submit(event) {
+    console.log(event);
+  }
 
   saveUser() {
+    this.user.last_updated = new Date().toLocaleString();
     this.usersService.update(this.user)
-      .then(() => this.dialogRef.close());
+      .then(() => this.dialogRef.close(true));
   }
 
   newUser() {
+    this.user.last_updated = new Date().toLocaleString();
     this.usersService.create(this.user)
-      .then(() => this.dialogRef.close());
+      .then(() => this.dialogRef.close(true));
   }
-
 }

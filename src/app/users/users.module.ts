@@ -5,7 +5,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MdButtonModule, MdCheckboxModule, MdTableModule, MdDialogModule, MdInputModule, MdRadioModule } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 
 
 import { UsersService } from './users.service';
@@ -26,8 +25,7 @@ import { UserTemplateComponent } from './user-template/user-template.component';
     MdDialogModule,
     MdInputModule,
     MdRadioModule,
-    FormsModule,
-    MaterialModule
+    FormsModule
   ],
   declarations: [
     UserListComponent,

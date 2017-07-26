@@ -3,6 +3,9 @@ import { Http, Response, Headers } from '@angular/http';
 import { User } from './../users.model';
 import { InMemoryDataService } from './../users-mock.model';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operator/map';
+
+
 
 @Injectable() export class UsersService {
 
@@ -13,10 +16,8 @@ import { Injectable } from '@angular/core';
   private usersUrl = 'api/usersList';
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  get(): Promise<User[]> {
-    return this.http.get(this.usersUrl)
-      .toPromise()
-      .then(response => response.json().data as User[]);
+  get()  {
+    return this.http.get(this.usersUrl);
   }
 
   delete(id: number): Promise<void> {
@@ -40,23 +41,4 @@ import { Injectable } from '@angular/core';
       .toPromise()
       .then(() => user);
   }
-
-  /*
-  getUsers() {
-    return this.http.get('api/usersList')
-      .subscribe((Response: Response) => {
-        Response.json().data.map((usersList: User) => {
-            return User.createObject(
-              usersList.id,
-              usersList.name,
-              usersList.picture,
-              usersList.average_grade,
-              usersList.homeworks_delivered,
-              usersList.homeworks_missing,
-              usersList.last_updated
-            );
-        });
-    });
-  }
-  */
 }

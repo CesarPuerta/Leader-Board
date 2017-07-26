@@ -1,56 +1,62 @@
-<form class="example-form">
+<form class="example-form" #userForm="ngForm">
   <table class="example-full-width" cellspacing="0">
     <tr>
       <td colspan="5">
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Full Name" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}">
-        </md-input-container>
+          <input mdInput placeholder="Full Name" name="userName" [(ngModel)]="user.name" #userName="ngModel" required >
+        </md-input-container>        
+        <div *ngIf="userName.errors && userName.touched" class="alert-box error"><span>error: </span>Field is required!</div>         
       </td>
     </tr>
     <tr>
       <td colspan="5">
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Photo" [(ngModel)]="user.picture" [ngModelOptions]="{standalone: true}">
+          <input mdInput placeholder="Photo" name="userPicture" #userPicture="ngModel" [(ngModel)]="user.picture" required>
         </md-input-container>
+        <div *ngIf="userPicture.errors && userPicture.touched" class="alert-box error"><span>error: </span>Field is required!</div>    
       </td>
     </tr>
     <tr>
       <td>
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Homework 1 score" [(ngModel)]="user.homework_1" [ngModelOptions]="{standalone: true}">
+          <input mdInput placeholder="Homework 1 score" name="userHomework1" #userHomework1="ngModel" [(ngModel)]="user.homework_1" pattern="[+-]?([0-9]*[.])?[0-9]+" required>
+        </md-input-container>        
+      </td>
+      <td>
+        <md-input-container class="example-full-width">
+          <input mdInput placeholder="Homework 2 score" name="userHomework2" #userHomework2="ngModel" [(ngModel)]="user.homework_2" pattern="[+-]?([0-9]*[.])?[0-9]+" required>
         </md-input-container>
       </td>
       <td>
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Homework 2 score" [(ngModel)]="user.homework_2" [ngModelOptions]="{standalone: true}">
+          <input mdInput placeholder="Homework 3 score" name="userHomework3" #userHomework3="ngModel" [(ngModel)]="user.homework_3" pattern="[+-]?([0-9]*[.])?[0-9]+" required>
         </md-input-container>
       </td>
       <td>
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Homework 3 score" [(ngModel)]="user.homework_3" [ngModelOptions]="{standalone: true}">
+          <input mdInput placeholder="Homework 4 score" name="userHomework4" #userHomework4="ngModel" [(ngModel)]="user.homework_4" pattern="[+-]?([0-9]*[.])?[0-9]+" required>
         </md-input-container>
       </td>
       <td>
         <md-input-container class="example-full-width">
-          <input mdInput placeholder="Homework 4 score" [(ngModel)]="user.homework_4" [ngModelOptions]="{standalone: true}">
+          <input mdInput placeholder="Homework 5 score" name="userHomework5" #userHomework5="ngModel" [(ngModel)]="user.homework_5" pattern="[+-]?([0-9]*[.])?[0-9]+" required>
         </md-input-container>
-      </td>
-      <td>
-        <md-input-container class="example-full-width">
-          <input mdInput placeholder="Homework 5 score" [(ngModel)]="user.homework_5" [ngModelOptions]="{standalone: true}">
-        </md-input-container>
-      </td>
+      </td>      
     </tr>
     <tr>
-      <td colspan="5">
-        <md-input-container class="example-full-width">
-          <input mdInput placeholder="Last updated" [(ngModel)]="user.last_updated" [ngModelOptions]="{standalone: true}">
-        </md-input-container>
-      </td>
+      <td colspan="5">        
+        <div *ngIf="(userHomework1.errors || userHomework2.errors || userHomework3.errors || userHomework4.errors || userHomework5.errors)" class="alert-box error"><span>error: </span>Only numbers are allowed.</div>
+        <div class="alert-box error"
+        *ngIf="
+          (userHomework1.errors || userHomework2.errors || userHomework3.errors || userHomework4.errors || userHomework5.errors)
+          && 
+          (userHomework1.touched || userHomework2.touched || userHomework3.touched || userHomework4.touched || userHomework5.touched)">
+          <span>error: </span>Fields are required!</div>         
+      </td>      
     </tr>
   </table>
   <md-dialog-actions>
-    <button *ngIf="!createUser" md-raised-button (click)="saveUser()">Update User</button>
-    <button *ngIf="createUser" md-raised-button (click)="newUser()">Create User</button>
+    <button *ngIf="!createUser" [disabled]="!userForm.valid" md-raised-button (click)="saveUser()">Update User</button>
+    <button *ngIf="createUser" [disabled]="!userForm.valid" md-raised-button (click)="newUser()">Create User</button>
   </md-dialog-actions>
 </form>

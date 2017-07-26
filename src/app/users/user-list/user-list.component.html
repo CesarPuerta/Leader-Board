@@ -1,15 +1,16 @@
-<button md-raised-button class="create" (click)="createUser()">Create User</button>
-<div class="input_container">
-
-<input type='text'  placeholder='Type to filter the name column...' (keyup)='updateFilter($event)'/>
+<div class="buttons-container">
+  <button md-raised-button (click)="createUser()">Create User</button>
+  <button *ngIf="showFullView" md-raised-button (click)="changeView()">Show Compact View</button>
+  <button *ngIf="!showFullView" md-raised-button (click)="changeView()">Show Full View</button>
 </div>
 
-
-
+<div class="input_container">
+  <input type='text'  placeholder='Type to filter the name column...' (keyup)='updateFilter($event)'/>
+</div>
 
 <ngx-datatable
   #table
-  class="material"
+  class="material table-Header"
   [rows]="rows"
   [columnMode]="'force'"
   [headerHeight]="50"
@@ -23,8 +24,8 @@
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Full Name" [width]="200">
-    <ng-template let-row="row" ngx-datatable-cell-template>
-      {{row.name}}
+    <ng-template  let-row="row" ngx-datatable-cell-template>
+      <span [style.color]="row.color_name">{{row.name}}</span>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Average Grade" [width]="100">
@@ -32,17 +33,17 @@
       {{row.average_grade}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Delivered Homeworks" [width]="150">
+  <ngx-datatable-column *ngIf="showFullView" name="Delivered Homeworks" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.homeworks_delivered}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Missing Homeworks" [width]="150">
+  <ngx-datatable-column *ngIf="showFullView" name="Missing Homeworks" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.homeworks_missing}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Last updated" [width]="150">
+  <ngx-datatable-column *ngIf="showFullView" name="Last updated" [width]="150">
     <ng-template let-row="row" ngx-datatable-cell-template>
       {{row.last_updated}}
     </ng-template>

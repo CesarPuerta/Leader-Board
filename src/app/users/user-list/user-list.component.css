@@ -1,15 +1,21 @@
 .input_container {
   text-align: center;
-  margin-top: 50px
 }
 
 .input_container input {
   padding:8px;
   width:30%;
+  margin: 0 0 10px 0;
 }
 
 .picture {
   width: 50px;
   border-radius: 25px;
   display: block;
+}
+
+.buttons-container {
+  margin-top: 50px;
+  text-align: center;
+  margin: 0 0 10px 0;
 }

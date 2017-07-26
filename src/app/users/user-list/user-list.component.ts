@@ -1,8 +1,8 @@
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { UserTemplateComponent } from './../user-template/user-template.component';
-
-
+import { map } from 'rxjs/operator/map';
+import { Observable } from 'rxjs/Rx'
 
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable/release';
@@ -22,8 +22,13 @@ import { UsersService } from './../users.service';
 export class UserListComponent implements OnInit {
 
   user: User;
-  rows: User[];
+  rows = [];
+  rows2 = [];
   temp = [];
+  showFullView = true;
+  tableButtonName = 'Show compact View';
+
+
   selectedOption: string;
   average: number;
 
@@ -37,33 +42,76 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     this.usersService.get()
-      .then((users: User[]) => {
-        this.rows = users;
+      .subscribe((Response) => {
+        Response.json().data.map((userData) => {
+          const dataUpdated = this.updateValues(userData);
+          this.rows.push(dataUpdated);
+          this.rows2.push(dataUpdated);
+        });
       });
+  }
+
+  getAverage(h1, h2, h3, h4, h5) {
+    return ((Number(h1) + Number(h2) + Number(h3) + Number(h4) + Number(h5)) / 5);
+  }
+
+  getCounter(userData, isMissing) {
+    let counter = 0;
+
+    if ((isMissing) ? Number(userData.homework_1) === 0 : Number(userData.homework_1) !== 0) {
+      counter++;
+    }
+    if ((isMissing) ? Number(userData.homework_2) === 0 : Number(userData.homework_2) !== 0) {
+      counter++;
+    }
+    if ((isMissing) ? Number(userData.homework_3) === 0 : Number(userData.homework_3) !== 0) {
+      counter++;
+    }
+    if ((isMissing) ? Number(userData.homework_4) === 0 : Number(userData.homework_4) !== 0) {
+      counter++;
+    }
+    if ((isMissing) ? Number(userData.homework_5) === 0 : Number(userData.homework_5) !== 0) {
+      counter++;
+    }
+    return counter;
+  }
+
+  updateValues(userData) {
+    userData.average_grade = this.getAverage(
+      userData.homework_1,
+      userData.homework_2,
+      userData.homework_3,
+      userData.homework_4,
+      userData.homework_5);
+    
+    userData.homeworks_missing = this.getCounter(userData, true);
+    userData.homeworks_delivered = this.getCounter(userData, false);
+    userData.color_name = (userData.homeworks_missing !== 0) ? 'red' : 'green';
+
+    return userData;
   }
 
   loadUsers() {
-    this.usersService.get().then((users: User[]) => this.rows = users);
+    this.rows = [];
+    this.rows2 = [];
+    this.usersService.get()
+      .subscribe((Response) => {
+        Response.json().data.map((userData) => {
+          const dataUpdated = this.updateValues(userData);
+          this.rows.push(dataUpdated);
+          this.rows2.push(dataUpdated);
+        });
+      });
   }
-
 
   updateFilter(event) {
+    this.temp = [];
     const val = event.target.value.toLowerCase();
-    // filter our data
-    if (val === '') {
-      this.loadUsers();
-    } else {
-      this.temp = this.rows.filter(function (d) {
-        return d.name.toLowerCase().indexOf(val) !== -1 || !val;
-      });
-    }
-
-    // update the rows
+    this.temp = this.rows2.filter(function (d) {
+      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+    });
     this.rows = this.temp;
-    // Whenever the filter changes, always go back to the first page
-    this.table.offset = 0;
   }
-
 
   onActivate(data) {
     this.openDialog(data);
@@ -75,10 +123,11 @@ export class UserListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadUsers();
+      if (result === true) {
+        this.loadUsers();
+      }
     });
   }
-
 
   delete(user): void {
     this.usersService
@@ -94,7 +143,13 @@ export class UserListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadUsers();
+      if (result === true) {
+        this.loadUsers();
+      }
     });
+  }
+
+  changeView() {
+    this.showFullView = !this.showFullView;
   }
 }
